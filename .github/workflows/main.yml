@@ -1,0 +1,39 @@
+name: MLOps
+
+on: [push]
+
+jobs:
+  train-and-deploy:
+    runs-on: [self-hosted] 
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: DVC Data Pull
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc pull -r jetson
+
+      - name: Reproduce Pipeline
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+          MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc repro
+
+      - name: Push Results to Jetson
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc push -r jetson
+
+      # - name: Deploy Model
+      #   run: |
+      #     conda activate mlops
+      #     pkill -f "mlflow models serve" || true
+      #     mlflow models serve -m "models:/CatsDogsModel/Production" -p 1234 --no-conda --host 0.0.0.0 &
