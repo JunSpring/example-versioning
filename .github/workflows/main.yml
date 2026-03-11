@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set DVC Local Config
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc remote add -d jetson ${{ secrets.DVC_JETSON_URL }} --local
+
       - name: DVC Data Pull
         run: |
           conda run -n mlops --no-capture-output \
