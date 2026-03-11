@@ -52,9 +52,8 @@ from tqdm.keras import TqdmCallback
 import mlflow
 import mlflow.keras
 
-mlflow.set_tracking_uri("http://115.20.193.81:5000")
 mlflow.set_experiment("cat-dog-classification")
-# mlflow.system_metrics.enable_system_metrics_logging()
+mlflow.system_metrics.enable_system_metrics_logging()
 
 pathname = os.path.dirname(sys.argv[0])
 path = os.path.abspath(pathname)

@@ -3,7 +3,7 @@ name: MLOps
 on: [push]
 
 jobs:
-  train-and-deploy:
+  dvc-and-mlflow:
     runs-on: [self-hosted] 
     defaults:
       run:
