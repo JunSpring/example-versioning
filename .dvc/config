@@ -1,6 +1,2 @@
 [cache]
     type = "hardlink,symlink"
-[core]
-    remote = jetson
-['remote "jetson"']
-    url = ssh://ysh@115.20.193.81:404/home/ysh/Documents/remote_storage
