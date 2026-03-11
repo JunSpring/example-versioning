@@ -49,6 +49,13 @@ from tensorflow.keras import applications
 from tensorflow.keras.callbacks import CSVLogger
 from tqdm.keras import TqdmCallback
 
+import mlflow
+import mlflow.keras
+
+mlflow.set_tracking_uri("http://115.20.193.81:5000")
+mlflow.set_experiment("cat-dog-classification")
+# mlflow.system_metrics.enable_system_metrics_logging()
+
 pathname = os.path.dirname(sys.argv[0])
 path = os.path.abspath(pathname)
 
@@ -115,14 +122,46 @@ def train_top_model():
     model.compile(optimizer='rmsprop',
                   loss='binary_crossentropy', metrics=['accuracy'])
 
-    model.fit(train_data, train_labels,
+    history = model.fit(train_data, train_labels,
               epochs=epochs,
               batch_size=batch_size,
               validation_data=(validation_data, validation_labels),
               verbose=0,
               callbacks=[TqdmCallback(), CSVLogger("metrics.csv")])
+    
+    mlflow.log_metrics({
+        "accuracy": float(history.history['accuracy'][-1]),
+        "val_accuracy": float(history.history['val_accuracy'][-1]),
+        "loss": float(history.history['loss'][-1]),
+        "val_loss": float(history.history['val_loss'][-1])
+    })
+    
     model.save_weights(top_model_weights_path)
+    return model, train_data
 
 
-save_bottlebeck_features()
-train_top_model()
+if __name__ == "__main__":
+    with mlflow.start_run():
+        
+        mlflow.log_params({
+            "epochs": epochs,
+            "batch_size": batch_size,
+            "img_width": img_width,
+            "img_height": img_height,
+            "nb_train_samples": nb_train_samples
+        })
+
+        save_bottlebeck_features()
+
+        model, train_data = train_top_model() 
+
+        mlflow.log_artifact(top_model_weights_path)
+
+        signature = mlflow.models.infer_signature(train_data, model.predict(train_data))
+        
+        mlflow.keras.log_model(
+            model, 
+            name="model", 
+            registered_model_name="CatDogClassifier",
+            signature=signature
+        )
