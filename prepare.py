@@ -51,4 +51,4 @@ def prepare_data():
     print(f"✅ 데이터 준비 완료! (Validation: 클래스당 {VAL_COUNT_PER_CLASS}장 고정)")
 
 if __name__ == "__main__":
-    prepare_data()
+    prepare_data() 

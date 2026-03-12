@@ -29,3 +29,21 @@ stages:
       hash: md5
       md5: 40d6727328f0a5a1ff35931fe76717a1
       size: 16803488
+  prepare:
+    cmd: python prepare.py
+    deps:
+    - path: prepare.py
+      hash: md5
+      md5: e031759944e45266fbabe8393fd2aad6
+      size: 1760
+    - path: raw_data/
+      hash: md5
+      md5: 41bdccf445a501f4787731db37834072.dir
+      size: 64128504
+      nfiles: 2800
+    outs:
+    - path: data/
+      hash: md5
+      md5: 4d4aaeb85974d072902eec7a0e19194a.dir
+      size: 64128504
+      nfiles: 2800
