@@ -38,12 +38,12 @@ stages:
       size: 1760
     - path: raw_data/
       hash: md5
-      md5: 41bdccf445a501f4787731db37834072.dir
-      size: 64128504
-      nfiles: 2800
+      md5: da406ab8dfbf619ed7685ac650d420ad.dir
+      size: 52504425
+      nfiles: 2300
     outs:
     - path: data/
       hash: md5
-      md5: 4d4aaeb85974d072902eec7a0e19194a.dir
-      size: 64128504
-      nfiles: 2800
+      md5: 3d49d4f9f9fd98942f34a94479e98b22.dir
+      size: 52504425
+      nfiles: 2300
