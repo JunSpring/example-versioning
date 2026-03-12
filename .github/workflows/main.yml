@@ -21,7 +21,7 @@ jobs:
       - name: DVC Data Pull
         run: |
           conda run -n mlops --no-capture-output \
-          dvc pull raw_data.dvc -r jetson
+          dvc pull -r jetson
 
       - name: Reproduce Pipeline
         env:
