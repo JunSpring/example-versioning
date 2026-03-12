@@ -30,7 +30,7 @@ jobs:
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
           conda run -n mlops --no-capture-output \
-          dvc repro
+          dvc repro train
 
       - name: Push Results to Jetson
         run: |
