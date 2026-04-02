@@ -1,0 +1,44 @@
+name: MLOps
+
+on: [push]
+
+jobs:
+  dvc-and-mlflow:
+    runs-on: [self-hosted] 
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set DVC Local Config
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc config --local cache.dir /media/junspring/JunSpring2/dvc_cache2
+
+      - name: DVC Data Update
+        run: |
+          conda run -n mlops --no-capture-output \
+          dvc update
+
+      - name: Reproduce Pipeline
+        env:
+          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+          MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
+          MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+        run: |
+          conda run -n mlops --no-capture-output \
+          python train.py
+
+    #   - name: Push Results to Jetson
+    #     run: |
+    #       conda run -n mlops --no-capture-output \
+    #       dvc push -r jetson
+
+      # - name: Deploy Model
+      #   run: |
+      #     conda activate mlops
+      #     pkill -f "mlflow models serve" || true
+      #     mlflow models serve -m "models:/CatsDogsModel/Production" -p 1234 --no-conda --host 0.0.0.0 &
