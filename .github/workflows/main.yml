@@ -21,7 +21,7 @@ jobs:
       - name: DVC Data Update
         run: |
           conda run -n mlops --no-capture-output \
-          dvc update
+          dvc update data.dvc
 
       - name: Reproduce Pipeline
         env:
