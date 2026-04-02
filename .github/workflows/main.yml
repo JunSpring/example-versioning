@@ -30,13 +30,16 @@ jobs:
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
-          # --wait를 빼고 실행합니다. 제출 즉시 이 단계는 끝납니다.
+          # 1. 로그 폴더가 없으면 에러가 날 수 있으므로 미리 생성
+          mkdir -p logs
+          
+          # 2. sbatch 실행
           sbatch <<EOF
           #!/bin/bash
           #SBATCH --job-name=mlops_async
-          #SBATCH --output=~/logs/result_%j.out  # %j는 Slurm 작업 ID입니다.
-          #SBATCH --error=~/logs/error_%j.err
-          #SBATCH --gres=gpu:1                 # GPU 1개 요청 (Slurm이 남는 번호를 자동 할당)
+          #SBATCH --output=logs/result_%j.out
+          #SBATCH --error=logs/error_%j.err
+          #SBATCH --gres=gpu:1
           
           source ~/anaconda3/etc/profile.d/conda.sh
           conda activate mlops
