@@ -5,29 +5,29 @@ stages:
     deps:
     - path: data
       hash: md5
-      md5: 21060888834f7220846d1c6f6c04e649.dir
-      size: 64128504
-      nfiles: 2800
+      md5: 3d49d4f9f9fd98942f34a94479e98b22.dir
+      size: 52504425
+      nfiles: 2300
     - path: train.py
       hash: md5
-      md5: 535177d99dffee65f0809f1e204ad16f
-      size: 5292
+      md5: 2f7f90eb28031a8d44eaa8b8600e8a85
+      size: 5238
     outs:
     - path: bottleneck_features_train.npy
       hash: md5
-      md5: 529f74322075d87c14ebe8e022c856f1
-      size: 65536128
+      md5: ec733e931b660ec0b709b27d060da61f
+      size: 49152128
     - path: bottleneck_features_validation.npy
       hash: md5
-      md5: 86f92e0f424a344528e80199e552c348
+      md5: d02b34bf88d10a8a000481fc76bb46e4
       size: 26214528
     - path: metrics.csv
       hash: md5
-      md5: 202e6dee7cf6d864834848430e60dedb
-      size: 836
+      md5: e91c4a851a773e0b698de530da485e23
+      size: 838
     - path: model.weights.h5
       hash: md5
-      md5: 40d6727328f0a5a1ff35931fe76717a1
+      md5: 7c02831252b2b3d6981a12a088a9c903
       size: 16803488
   prepare:
     cmd: python prepare.py
