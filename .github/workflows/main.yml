@@ -34,8 +34,8 @@ jobs:
           sbatch <<EOF
           #!/bin/bash
           #SBATCH --job-name=mlops_async
-          #SBATCH --output=logs/result_%j.out  # %j는 Slurm 작업 ID입니다.
-          #SBATCH --error=logs/error_%j.err
+          #SBATCH --output=~/logs/result_%j.out  # %j는 Slurm 작업 ID입니다.
+          #SBATCH --error=~/logs/error_%j.err
           #SBATCH --gres=gpu:1                 # GPU 1개 요청 (Slurm이 남는 번호를 자동 할당)
           
           source ~/anaconda3/etc/profile.d/conda.sh
