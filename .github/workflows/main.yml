@@ -23,15 +23,26 @@ jobs:
           conda run -n mlops --no-capture-output \
           dvc update data.dvc
 
-      - name: Reproduce Pipeline
+      - name: Submit to Slurm (No Wait)
         env:
           LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu:/home/junspring/anaconda3/envs/mlops/lib
           MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
         run: |
-          conda run -n mlops --no-capture-output \
+          # --wait를 빼고 실행합니다. 제출 즉시 이 단계는 끝납니다.
+          sbatch <<EOF
+          #!/bin/bash
+          #SBATCH --job-name=mlops_async
+          #SBATCH --output=logs/result_%j.out  # %j는 Slurm 작업 ID입니다.
+          #SBATCH --error=logs/error_%j.err
+          #SBATCH --gres=gpu:1                 # GPU 1개 요청 (Slurm이 남는 번호를 자동 할당)
+          
+          source ~/anaconda3/etc/profile.d/conda.sh
+          conda activate mlops
+          
           python train.py
+          EOF
 
     #   - name: Push Results to Jetson
     #     run: |
