@@ -37,8 +37,8 @@ jobs:
           sbatch <<EOF
           #!/bin/bash
           #SBATCH --job-name=mlops_async
-          #SBATCH --output=logs/result_%j.out
-          #SBATCH --error=logs/error_%j.err
+          #SBATCH --output=logs/result_%j.log
+          #SBATCH --error=logs/error_%j.log
           #SBATCH --gres=gpu:1
           
           source ~/anaconda3/etc/profile.d/conda.sh
